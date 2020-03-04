@@ -77,7 +77,7 @@ class World:
             #print(f"You {movement_verb} a {noun}. {location}, you {sense} {sight}")
             room = Room(room_count, adjective + " " + noun,
                         "You " + movement_verb + " a " + noun + ". " + location + " you " + sense + " " + sight, x, y)
-            # room.save()
+            room.save()
             print("room", room)
             # Note that in Django, you'll need to save the room after you create it
             # Save the room in the World grid

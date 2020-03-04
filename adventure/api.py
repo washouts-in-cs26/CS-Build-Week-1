@@ -77,11 +77,17 @@ def say(request):
 @api_view(["GET"])
 def map_endpoint(request):
     data = Room.objects.all()
-    tracks = {}
+    dataCount = data.count()
+    print(dataCount)
+    tracks = dict()
     for item in data:
+        # print("count", count)
+        # print("data",data)
+        # print("item", item)
         #  on front-end, will need to do Object.values(response....) to get the number and not title
         # or can be item.id to return a string, ie, "13" and cast it to int on front end(casting don't work here for some reason)
-        tracks[item.title] = {
+        # print("tracks items", tracks.count())
+        tracks[item.id] = {
             "id" : item.id,
             "title" : item.title,
             "description" : item.description,
@@ -90,6 +96,14 @@ def map_endpoint(request):
             "w_to" : item.w_to,
             "e_to" : item.e_to,
             "x": item.x,
-            "y": item.y
+            "y": item.y,
         }
     return JsonResponse(tracks)
+    # return JsonResponse(tracks)
+
+    # print("sanity check", tracks[item].title)
+    # return JsonResponse({'id':tracks[item].id, 'title':tracks[item].title, 'description': tracks[item].description})
+    # print(Room.object.all().count())
+    # return Room.object.all().count()
+    #return tracks
+
