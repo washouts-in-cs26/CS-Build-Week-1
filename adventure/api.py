@@ -68,28 +68,26 @@ def say(request):
     # IMPLEMENT
     return JsonResponse({'error':"Not yet implemented"}, safe=True, status=500)
 
-#@csrf_exempt
-#@api_view(["GET"])
-#def map_endpoint(request):
-#    data = request.Room
-#    roomData = data.objects.all()
-#    return JsonResponse(data)
 
 @csrf_exempt
 @api_view(["GET"])
 def map_endpoint(request):
     data = Room.objects.all()
-    dataCount = data.count()
-    print(dataCount)
-    tracks = dict()
+    #tracks = dict()
+    tracks = []
     for item in data:
-        # print("count", count)
-        # print("data",data)
-        # print("item", item)
-        #  on front-end, will need to do Object.values(response....) to get the number and not title
-        # or can be item.id to return a string, ie, "13" and cast it to int on front end(casting don't work here for some reason)
-        # print("tracks items", tracks.count())
-        tracks[item.id] = {
+        # tracks[item.id] = {
+        #     "id" : item.id,
+        #     "title" : item.title,
+        #     "description" : item.description,
+        #     "n_to" : item.n_to,
+        #     "s_to" : item.s_to,
+        #     "w_to" : item.w_to,
+        #     "e_to" : item.e_to,
+        #     "x": item.x,
+        #     "y": item.y,
+        # }
+        new_room = {
             "id" : item.id,
             "title" : item.title,
             "description" : item.description,
@@ -100,12 +98,7 @@ def map_endpoint(request):
             "x": item.x,
             "y": item.y,
         }
-    return JsonResponse(tracks)
-    # return JsonResponse(tracks)
+        tracks.append(new_room)
+    return JsonResponse(tracks, safe=False)
 
-    # print("sanity check", tracks[item].title)
-    # return JsonResponse({'id':tracks[item].id, 'title':tracks[item].title, 'description': tracks[item].description})
-    # print(Room.object.all().count())
-    # return Room.object.all().count()
-    #return tracks
 

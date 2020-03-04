@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User
 from adventure.models import Player, Room
 import random
-#Room.objects.all().delete()
+Room.objects.all().delete()
 class World:
     def __init__(self):
         self.grid = None
@@ -72,6 +72,8 @@ class World:
             #print(f"You {movement_verb} a {noun}. {location}, you {sense} {sight}")
             room = Room(room_count, adjective + " " + noun,
                         "You " + movement_verb + " a " + noun + ". " + location + " you " + sense + " " + sight, x, y)
+            room.x = x
+            room.y = y            
             room.save()
             print("room", room)
             # Note that in Django, you'll need to save the room after you create it
