@@ -4,7 +4,6 @@ import random
 
 
 Room.objects.all().delete()
-# World.objects.all().delete()
 
 
 class World:
@@ -30,8 +29,6 @@ class World:
         direction = 1  # 1: east, -1: west
         # While there are rooms to be created...
         previous_room = None
-        #switch out while loop for a for loop...
-        #for i in range(1, 100):
         while room_count < num_rooms:
             print("room count", room_count)
             # Calculate the direction of the room to be created
@@ -77,68 +74,15 @@ class World:
             #print(f"You {movement_verb} a {noun}. {location}, you {sense} {sight}")
             room = Room(room_count, adjective + " " + noun,
                         "You " + movement_verb + " a " + noun + ". " + location + " you " + sense + " " + sight, x, y)
-            room.save()
-            print("room", room)
-            # Note that in Django, you'll need to save the room after you create it
+            room.save()            # Note that in Django, you'll need to save the room after you create it
             # Save the room in the World grid
             self.grid[y][x] = room
-            print("gridroom", room)
             # Connect the new room to the previous room
             if previous_room is not None:
-                print("previous room", previous_room)
-                print("room in connect", room)
-                print("room_dir", room_direction)
                 previous_room.connectRooms(room, room_direction)
             # Update iteration variables
             previous_room = room
             room_count += 1
-
-# name generator
-
-# r_outside = Room(title="Outside Cave Entrance",
-#                description="North of you, the cave mount beckons")
-
-# r_foyer = Room(title="Foyer", description="""Dim light filters in from the south. Dusty
-# passages run north and east.""")
-
-# r_overlook = Room(title="Grand Overlook", description="""A steep cliff appears before you, falling
-# into the darkness. Ahead to the north, a light flickers in
-# the distance, but there is no way across the chasm.""")
-
-# r_narrow = Room(title="Narrow Passage", description="""The narrow passage bends here from west
-# to north. The smell of gold permeates the air.""")
-
-# r_treasure = Room(title="Treasure Chamber", description="""You've found the long-lost treasure
-# chamber! Sadly, it has already been completely emptied by
-# earlier adventurers. The only exit is to the south.""")
-# r_{name}.save()
-# r_outside.save()
-# r_foyer.save()
-# r_overlook.save()
-# r_narrow.save()
-# r_treasure.save()
-
-# Link rooms together
-# r_outside.connectRooms(r_foyer, "n")
-# r_foyer.connectRooms(r_outside, "s")
-
-# r_foyer.connectRooms(r_overlook, "n")
-# r_overlook.connectRooms(r_foyer, "s")
-
-# r_foyer.connectRooms(r_narrow, "e")
-# r_narrow.connectRooms(r_foyer, "w")
-
-# r_narrow.connectRooms(r_treasure, "n")
-# r_treasure.connectRooms(r_narrow, "s")
-
-# players=Player.objects.all()
-# for p in players:
-#   p.currentRoom=r_outside.id
-#   p.save()
-
-# createWorld()
-
-
 
 w = World()
 number_of_rooms = 100

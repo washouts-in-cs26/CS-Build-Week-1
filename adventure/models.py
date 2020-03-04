@@ -37,12 +37,22 @@ class Room(models.Model):
                 print("Invalid direction")
                 return
             self.save()
+    # def items(self):
+    #     library = dict()
+    #     room_contents = [item for i in Roo]
 
     def playerNames(self, currentPlayerID):
         return [p.user.username for p in Player.objects.filter(currentRoom=self.id) if p.id != int(currentPlayerID)]
 
     def playerUUIDs(self, currentPlayerID):
         return [p.uuid for p in Player.objects.filter(currentRoom=self.id) if p.id != int(currentPlayerID)]
+
+
+class Item(models.Model):
+    name = models.CharField(max_length=50, default="DEFAULT ITEM")
+    description = models.CharField(
+        max_length=500, default="DEFAULT DESCRIPTION")
+    item_type = models.CharField(max_length=50, default="DEFAULT TYPE")
 
 
 class Player(models.Model):
