@@ -18,11 +18,12 @@ class Room(models.Model):
     y = models.IntegerField(default=0)
 
     def connectRooms(self, destinationRoom, direction):
+        print("destination room", destinationRoom)
         destinationRoomID = destinationRoom.id
         try:
             destinationRoom = Room.objects.get(id=destinationRoomID)
         except Room.DoesNotExist:
-            print("That room does not exist")
+            print("That room does not exist", destinationRoomID)
         else:
             if direction == "n":
                 self.n_to = destinationRoomID

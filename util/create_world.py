@@ -3,10 +3,11 @@ from adventure.models import Player, Room
 import random
 
 
-#Room.objects.all().delete()
+Room.objects.all().delete()
+# World.objects.all().delete()
 
 
-class World():
+class World:
     def __init__(self):
         self.grid = None
         self.width = 0
@@ -32,15 +33,19 @@ class World():
         #switch out while loop for a for loop...
         #for i in range(1, 100):
         while room_count < num_rooms:
+            print("room count", room_count)
             # Calculate the direction of the room to be created
             if direction > 0 and x < size_x - 1:
+                print("if", x)
                 room_direction = "e"
                 x += 1
             elif direction < 0 and x > 0:
+                print("elif", x)
                 room_direction = "w"
                 x -= 1
             else:
                 # If we hit a wall, turn north and reverse direction
+                print("else", x)
                 room_direction = "n"
                 y += 1
                 direction *= -1
@@ -73,12 +78,16 @@ class World():
             room = Room(room_count, adjective + " " + noun,
                         "You " + movement_verb + " a " + noun + ". " + location + " you " + sense + " " + sight, x, y)
             # room.save()
+            print("room", room)
             # Note that in Django, you'll need to save the room after you create it
             # Save the room in the World grid
             self.grid[y][x] = room
-            room.save()
+            print("gridroom", room)
             # Connect the new room to the previous room
             if previous_room is not None:
+                print("previous room", previous_room)
+                print("room in connect", room)
+                print("room_dir", room_direction)
                 previous_room.connectRooms(room, room_direction)
             # Update iteration variables
             previous_room = room
