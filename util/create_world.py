@@ -1,12 +1,7 @@
 from django.contrib.auth.models import User
 from adventure.models import Player, Room
 import random
-
-
-Room.objects.all().delete()
-# World.objects.all().delete()
-
-
+#Room.objects.all().delete()
 class World:
     def __init__(self):
         self.grid = None
@@ -92,8 +87,8 @@ class World:
             # Update iteration variables
             previous_room = room
             room_count += 1
-w = World()
+world = World()
 number_of_rooms = 100
 width = 20
 height = 20
-w.generate_rooms(width, height, number_of_rooms)
+world.generate_rooms(width, height, number_of_rooms)
