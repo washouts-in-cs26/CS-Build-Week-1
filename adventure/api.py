@@ -21,7 +21,9 @@ def initialize(request):
     uuid = player.uuid
     room = player.room()
     players = room.playerNames(player_id)
-    return JsonResponse({'uuid': uuid, 'name': player.user.username, 'title': room.title, 'description': room.description, 'players': players}, safe=True)
+    x = room.x
+    y = room.y
+    return JsonResponse({'uuid': uuid, 'name':player.user.username, 'title':room.title, 'description':room.description, 'players':players, 'x': x, 'y': y}, safe=True)
 
 
 # @csrf_exempt
@@ -67,36 +69,38 @@ def say(request):
     # IMPLEMENT
     return JsonResponse({'error': "Not yet implemented"}, safe=True, status=500)
 
-# @csrf_exempt
-# @api_view(["GET"])
-# def map_endpoint(request):
-#    data = request.Room
-#    roomData = data.objects.all()
-#    return JsonResponse(data)
 
 
 @csrf_exempt
 @api_view(["GET"])
 def map_endpoint(request):
     data = Room.objects.all()
-    dataCount = data.count()
-    tracks = dict()
+    #tracks = dict()
+    tracks = []
     for item in data:
-        # print("count", count)
-        # print("data",data)
-        # print("item", item)
-        #  on front-end, will need to do Object.values(response....) to get the number and not title
-        # or can be item.id to return a string, ie, "13" and cast it to int on front end(casting don't work here for some reason)
-        # print("tracks items", tracks.count())
-        tracks[item.id] = {
-            "id": item.id,
-            "title": item.title,
-            "description": item.description,
-            "n_to": item.n_to,
-            "s_to": item.s_to,
-            "w_to": item.w_to,
-            "e_to": item.e_to,
+        # tracks[item.id] = {
+        #     "id" : item.id,
+        #     "title" : item.title,
+        #     "description" : item.description,
+        #     "n_to" : item.n_to,
+        #     "s_to" : item.s_to,
+        #     "w_to" : item.w_to,
+        #     "e_to" : item.e_to,
+        #     "x": item.x,
+        #     "y": item.y,
+        # }
+        new_room = {
+            "id" : item.id,
+            "title" : item.title,
+            "description" : item.description,
+            "n_to" : item.n_to,
+            "s_to" : item.s_to,
+            "w_to" : item.w_to,
+            "e_to" : item.e_to,
             "x": item.x,
             "y": item.y,
         }
-    return JsonResponse(tracks)
+        tracks.append(new_room)
+    return JsonResponse(tracks, safe=False)
+
+
