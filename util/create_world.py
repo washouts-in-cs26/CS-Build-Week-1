@@ -94,3 +94,8 @@ number_of_rooms = 100
 width = 20
 height = 20
 world.generate_rooms(width, height, number_of_rooms)
+
+# players=Player.objects.all()
+# for p in players:
+#   p.currentRoom=orientation.id
+#   p.save()
