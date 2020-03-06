@@ -16,6 +16,7 @@ import json
 @api_view(["GET"])
 def initialize(request):
     user = request.user
+    print("user", user)
     player = user.player
     player_id = player.id
     uuid = player.uuid
@@ -23,15 +24,16 @@ def initialize(request):
     players = room.playerNames(player_id)
     x = room.x
     y = room.y
-    return JsonResponse({'uuid': uuid, 'name':player.user.username, 'title':room.title, 'description':room.description, 'players':players, 'x': x, 'y': y}, safe=True)
+    return JsonResponse({'uuid': uuid, 'name': player.user.username, 'title': room.title, 'description': room.description, 'players': players, 'x': x, 'y': y}, safe=True)
 
 
 # @csrf_exempt
 @api_view(["POST"])
 def move(request):
+    user = request.user
     dirs = {"n": "north", "s": "south", "e": "east", "w": "west"}
     reverse_dirs = {"n": "south", "s": "north", "e": "west", "w": "east"}
-    player = request.user.player
+    player = user.player
     player_id = player.id
     player_uuid = player.uuid
     data = json.loads(request.body)
@@ -46,7 +48,7 @@ def move(request):
         nextRoomID = room.e_to
     elif direction == "w":
         nextRoomID = room.w_to
-    if nextRoomID is not None and nextRoomID > 0:
+    if nextRoomID is not None:
         nextRoom = Room.objects.get(id=nextRoomID)
         player.currentRoom = nextRoomID
         player.save()
@@ -59,6 +61,7 @@ def move(request):
         #     pusher.trigger(f'p-channel-{p_uuid}', u'broadcast', {'message':f'{player.user.username} has entered from the {reverse_dirs[direction]}.'})
         return JsonResponse({'name': player.user.username, 'title': nextRoom.title, 'description': nextRoom.description, 'players': players, 'error_msg': ""}, safe=True)
     else:
+        print("nextroom id", nextRoomID)
         players = room.playerNames(player_id)
         return JsonResponse({'name': player.user.username, 'title': room.title, 'description': room.description, 'players': players, 'error_msg': "You cannot move that way."}, safe=True)
 
@@ -68,7 +71,6 @@ def move(request):
 def say(request):
     # IMPLEMENT
     return JsonResponse({'error': "Not yet implemented"}, safe=True, status=500)
-
 
 
 @csrf_exempt
@@ -90,17 +92,15 @@ def map_endpoint(request):
         #     "y": item.y,
         # }
         new_room = {
-            "id" : item.id,
-            "title" : item.title,
-            "description" : item.description,
-            "n_to" : item.n_to,
-            "s_to" : item.s_to,
-            "w_to" : item.w_to,
-            "e_to" : item.e_to,
+            "id": item.id,
+            "title": item.title,
+            "description": item.description,
+            "n_to": item.n_to,
+            "s_to": item.s_to,
+            "w_to": item.w_to,
+            "e_to": item.e_to,
             "x": item.x,
             "y": item.y,
         }
         tracks.append(new_room)
     return JsonResponse(tracks, safe=False)
-
-
